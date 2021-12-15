@@ -1,10 +1,15 @@
 package blf;
 
+import blf.blockchains.algorand.check_Manifest;
 import blf.util.RootListenerException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +22,7 @@ public class BlfApp {
     private static final String CMD_VALIDATE = "validate";
     private static final Logger LOGGER = Logger.getLogger(BlfApp.class.getName());
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchAlgorithmException, InterruptedException, IOException {
         if (args.length < 2) {
             final String message = String.format(
                 "Execution of ELF requires two arguments: [%s|%s|%s] <PATH_TO_SCRIPT>",
@@ -71,24 +76,57 @@ public class BlfApp {
         }
     }
 
-    private static void extract(String filepath) {
-        final Extractor extractor = new Extractor();
-
+    private static void extract(String filepath) throws NoSuchAlgorithmException, InterruptedException, IOException {
+        boolean Algo_true = false;
+        boolean both = true;
         try {
-            extractor.extractData(filepath);
-        } catch (BcqlProcessingException ex) {
-            ex.printStackTrace(System.err);
+            File check_type = new File(filepath);
+            Scanner check_type2 = new Scanner(check_type);
+            while (check_type2.hasNextLine()) {
+                String data_check = check_type2.nextLine();
+                if (data_check.contains("algorand") || data_check.contains("ALGORAND") || data_check.contains("ALGORAND")) {
+                    Algo_true = true;
+                    break;
+                }
+            }
+            check_type2.close();
+            if (Algo_true) {
+                check_Manifest.startAlgo(filepath, both);
+            } else {
+                final Extractor extractor = new Extractor();
+                try {
+                    extractor.extractData(filepath);
+                } catch (BcqlProcessingException ex) {
+                    ex.printStackTrace(System.err);
+                }
+            }
         } catch (RootListenerException e) {
             e.printStackTrace();
         }
+
     }
 
-    private static void validate(String filepath) {
-        final Validator validator = new Validator();
-
+    private static void validate(String filepath) throws NoSuchAlgorithmException, InterruptedException, IOException {
+        boolean one = false;
+        boolean Algo_true = false;
         try {
-            final List<BcqlProcessingError> errors = validator.analyzeScript(filepath);
-            printValidationResult(errors);
+            File check_type = new File(filepath);
+            Scanner check_type2 = new Scanner(check_type);
+            while (check_type2.hasNextLine()) {
+                String data_check = check_type2.nextLine();
+                if (data_check.contains("algorand") || data_check.contains("ALGORAND") || data_check.contains("ALGORAND")) {
+                    Algo_true = true;
+                    break;
+                }
+            }
+            check_type2.close();
+            if (Algo_true) {
+                check_Manifest.startAlgo(filepath, one);
+            } else {
+                final Validator validator = new Validator();
+                final List<BcqlProcessingError> errors = validator.analyzeScript(filepath);
+                printValidationResult(errors);
+            }
         } catch (BcqlProcessingException ex) {
             ex.printStackTrace(System.err);
         }

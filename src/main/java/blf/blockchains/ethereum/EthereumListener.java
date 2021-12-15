@@ -18,21 +18,23 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class EthereumListener extends BaseBlockchainListener {
-    private static final Logger LOGGER = Logger.getLogger(EthereumListener.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EthereumListener.class.getName()); // Create a logger with the name of the class
+                                                                                             // "EthereumListener"
 
     public EthereumListener(VariableExistenceListener analyzer) {
-        super(analyzer);
+        super(analyzer); // stack used to put manifest's data
 
         this.state = new EthereumProgramState();
 
-        analyzer.setBlockchainVariables(this.state.getBlockchainVariables());
+        analyzer.setBlockchainVariables(this.state.getBlockchainVariables()); // set stack blockchain to take blockchain variables from
+                                                                              // manifest
     }
 
     @Override
     public void exitConnection(BcqlParser.ConnectionContext ctx) {
         final EthereumProgramState ethereumProgramState = (EthereumProgramState) state;
         final BcqlParser.LiteralContext literal = ctx.literal();
-        final String literalText = ctx.literal().getText();
+        final String literalText = ctx.literal().getText(); // take variables for connection to eth
 
         if (literal.STRING_LITERAL() == null) {
             ExceptionHandler.getInstance()
@@ -49,7 +51,7 @@ public class EthereumListener extends BaseBlockchainListener {
 
         final String connectionInputParameter = TypeUtils.parseStringLiteral(literalText);
 
-        if (ctx.KEY_IPC() != null) {
+        if (ctx.KEY_IPC() != null) { // check if ipc or url
             ethereumProgramState.setConnectionIpcPath(connectionInputParameter);
             this.composer.instructionListsStack.peek().add(new EthereumConnectIpcInstruction());
         } else {
@@ -60,15 +62,15 @@ public class EthereumListener extends BaseBlockchainListener {
 
     @Override
     public void enterBlockFilter(BcqlParser.BlockFilterContext ctx) {
-        LOGGER.info("Prepare block filter build");
-        this.composer.prepareBlockRangeBuild();
+        LOGGER.info("Prepare block filter build"); // write to the logger
+        this.composer.prepareBlockRangeBuild(); // take from block to block values
     }
 
     private void buildBlockFilter(BcqlParser.BlockFilterContext ctx) {
-        LOGGER.info("Build block filter");
+        LOGGER.info("Build block filter"); // write to the logger
 
-        BlockNumberSpecification from = this.getBlockNumberSpecification(ctx.from);
-        BlockNumberSpecification to = this.getBlockNumberSpecification(ctx.to);
+        BlockNumberSpecification from = this.getBlockNumberSpecification(ctx.from); // take the values
+        BlockNumberSpecification to = this.getBlockNumberSpecification(ctx.to); // take the values
 
         if (this.composer.states.peek() != SpecificationComposer.FactoryState.BLOCK_RANGE_FILTER) {
             ExceptionHandler.getInstance()
@@ -96,18 +98,19 @@ public class EthereumListener extends BaseBlockchainListener {
         }
 
         final EthereumBlockFilterInstruction blockRange = new EthereumBlockFilterInstruction(
+            // values of blocks and wait until block exists
             from.getValueAccessor(),
             to.getStopCriterion(),
             this.composer.instructionListsStack.peek()
         );
 
-        this.composer.instructionListsStack.pop();
-        this.composer.instructionListsStack.peek().add(blockRange);
+        this.composer.instructionListsStack.pop(); // pop the first value of the stack
+        this.composer.instructionListsStack.peek().add(blockRange); // add next block
 
         this.composer.states.pop();
     }
 
-    private BlockNumberSpecification getBlockNumberSpecification(BcqlParser.BlockNumberContext ctx) {
+    private BlockNumberSpecification getBlockNumberSpecification(BcqlParser.BlockNumberContext ctx) { // check values of from/to blocks
 
         if (ctx.valueExpression() != null) {
             ValueAccessorSpecification number = this.getValueAccessor(ctx.valueExpression());
@@ -135,12 +138,12 @@ public class EthereumListener extends BaseBlockchainListener {
 
     @Override
     public void enterTransactionFilter(BcqlParser.TransactionFilterContext ctx) {
-        LOGGER.info("Prepare transaction filter build");
+        LOGGER.info("Prepare transaction filter build"); // write to the logger
         this.composer.prepareTransactionFilterBuild();
     }
 
     private void buildTransactionFilter(BcqlParser.TransactionFilterContext ctx) {
-        LOGGER.info("Build Transaction Filter");
+        LOGGER.info("Build Transaction Filter"); // write to the logger
         final AddressListSpecification senders = this.getAddressListSpecification(ctx.senders);
         final AddressListSpecification recipients = this.getAddressListSpecification(ctx.recipients);
         this.composer.buildTransactionFilter(senders, recipients);
@@ -148,12 +151,12 @@ public class EthereumListener extends BaseBlockchainListener {
 
     @Override
     public void enterLogEntryFilter(BcqlParser.LogEntryFilterContext ctx) {
-        LOGGER.info("Prepare log entry filter build");
+        LOGGER.info("Prepare log entry filter build"); // write to the logger
         this.composer.prepareLogEntryFilterBuild();
     }
 
     private void buildLogEntryFilter(BcqlParser.LogEntryFilterContext ctx) {
-        LOGGER.info("Build log entry filter");
+        LOGGER.info("Build log entry filter"); // write to the logger
 
         final AddressListSpecification contracts = this.getAddressListSpecification(ctx.addressList());
         final LogEntrySignatureSpecification signature = this.getLogEntrySignature(ctx.logEntrySignature());

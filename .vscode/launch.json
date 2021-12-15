@@ -2,6 +2,62 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch maaasd",
+            "request": "launch",
+            "mainClass": "blf.blockchains.algorand.maaasd",
+            "projectName": "blf"
+        },
+        {
+            "type": "java",
+            "name": "Launch BlfApp",
+            "request": "launch",
+            "mainClass": "blf.BlfApp",
+            "projectName": "blf"
+        },
+        {
+            "type": "java",
+            "name": "Launch check_Manifest",
+            "request": "launch",
+            "mainClass": "blf.blockchains.algorand.check_Manifest",
+            "projectName": "blf"
+        },
+        {
+            "type": "java",
+            "name": "Launch apply_Filters",
+            "request": "launch",
+            "mainClass": "blf.blockchains.algorand.apply_Filters",
+            "projectName": "blf"
+        },
+        {
+            "type": "java",
+            "name": "Launch magico",
+            "request": "launch",
+            "mainClass": "blf.blockchains.algorand.state.magico",
+            "projectName": "blf"
+        },
+        {
+            "type": "java",
+            "name": "Launch json",
+            "request": "launch",
+            "mainClass": "blf.blockchains.algorand.state.json",
+            "projectName": "blf"
+        },
+        {
+            "type": "java",
+            "name": "Launch cerbiatto",
+            "request": "launch",
+            "mainClass": "blf.blockchains.algorand.state.cerbiatto",
+            "projectName": "blf"
+        },
+        {
+            "type": "java",
+            "name": "Launch Prova",
+            "request": "launch",
+            "mainClass": "blf.blockchains.algorand.state.Prova",
+            "projectName": "blf"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - ExtractorTest",
             "request": "launch",
             "mainClass": "au.csiro.data61.aap.samples.ExtractorTest",

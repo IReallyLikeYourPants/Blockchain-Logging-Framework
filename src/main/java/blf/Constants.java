@@ -13,6 +13,7 @@ import java.util.Map;
 public class Constants {
 
     public static final String ETHEREUM_BLOCKCHAIN_KEY = "ethereum";
+    public static final String ETHEREUM_CLASSIC_BLOCKCHAIN_KEY = "ethereum classic";
     public static final String HYPERLEDGER_BLOCKCHAIN_KEY = "hyperledger";
     public static final String TEMPLATE_BLOCKCHAIN_KEY = "template";
 
@@ -20,6 +21,7 @@ public class Constants {
 
     public static Map<String, BaseBlockchainListener> getBlockchainMap(VariableExistenceListener variableExistenceListener) {
         blockchainMap.put(ETHEREUM_BLOCKCHAIN_KEY, new EthereumListener(variableExistenceListener));
+        blockchainMap.put(ETHEREUM_CLASSIC_BLOCKCHAIN_KEY, new EthereumListener(variableExistenceListener));
         blockchainMap.put(HYPERLEDGER_BLOCKCHAIN_KEY, new HyperledgerListener(variableExistenceListener));
         blockchainMap.put(TEMPLATE_BLOCKCHAIN_KEY, new TemplateListener(variableExistenceListener));
 
