@@ -1,6 +1,7 @@
 package blf;
 
 import blf.blockchains.algorand.apply_Filters;
+import blf.blockchains.algorand.check_Manifest;
 import blf.configuration.BaseBlockchainListener;
 import blf.parsing.HyperledgerSmartContractAnalyzer;
 import blf.util.RootListenerException;
@@ -36,7 +37,6 @@ public class Extractor {
             throw new BcqlProcessingException("Error when configuring the data extraction.", blockchainListener.getError());
         }
         if (blockchainListener.toString().contains("Algorand")) {
-            // final apply_Filters allora = new apply_Filters(bcqlFilepath);
             System.out.print("ciao!");
         } else {
             Program program = rootListener.blockchainListener.getProgram();

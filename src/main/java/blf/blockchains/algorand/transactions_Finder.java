@@ -42,11 +42,11 @@ public class transactions_Finder {
             connection_To_Indexer ex = new connection_To_Indexer();
             IndexerClient indexerClientInstance = (IndexerClient) ex.connectToNetwork(address, token);
             Address account = new Address(address_set);
-            Path fileToDeletePath = Paths.get(output_path + "/output" + val1+ ".json");
+            Path fileToDeletePath = Paths.get(output_path + "/output" + val1 + ".json");
             Files.deleteIfExists(fileToDeletePath);
             fileToDeletePath = Paths.get(output_path + "/output.csv");
             Files.deleteIfExists(fileToDeletePath);
-            FileWriter file = new FileWriter(output_path + "/output" + val1+ ".json", true);
+            FileWriter file = new FileWriter(output_path + "/output" + val1 + ".json", true);
             data_check = data_check + "[" + "\n";
             while (block_start < block_end + 1) {
                 try {
@@ -74,42 +74,35 @@ public class transactions_Finder {
                             for (int e = 0; e < duplicates.size(); e++) {
                                 String key = "";
                                 if (duplicates_value.get(e).equals("amount")) {
-                                    
+
                                     int key1 = jsonObj.getJSONArray("transactions")
                                         .getJSONObject(i)
-                                        //.getJSONObject("asset-transfer-transaction")
+                                        // .getJSONObject("asset-transfer-transaction")
                                         .getJSONObject("payment-transaction")
                                         .getInt("amount");
                                     key = String.valueOf(key1);
-                                    
+
                                 } else if (duplicates_value.get(e).equals("receiver")) {
-                                    
+
                                     key = jsonObj.getJSONArray("transactions")
                                         .getJSONObject(i)
                                         .getJSONObject("payment-transaction")
                                         .getString("receiver");
-                                }
-                                else if (duplicates_value.get(e).equals("round-time")) {
-                                    int key1 = jsonObj.getJSONArray("transactions")
-                                        .getJSONObject(i)
-                                        .getInt("round-time");
-                                    java.util.Date time = new java.util.Date((long)key1*1000);
+                                } else if (duplicates_value.get(e).equals("round-time")) {
+                                    int key1 = jsonObj.getJSONArray("transactions").getJSONObject(i).getInt("round-time");
+                                    java.util.Date time = new java.util.Date((long) key1 * 1000);
                                     String pattern = "yyyy-MM-dd HH:mm:ss.SSS";
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
                                     String date = simpleDateFormat.format(time);
                                     key = String.valueOf(date);
-                                    
-                                } 
-                                else if (duplicates_value.get(e).charAt(duplicates_value.get(e).length() - 1) == '"'
-                                    && duplicates_value.get(e).charAt(0) == '"') 
-                                    {
+
+                                } else if (duplicates_value.get(e).charAt(duplicates_value.get(e).length() - 1) == '"'
+                                    && duplicates_value.get(e).charAt(0) == '"') {
                                         key = duplicates_value.get(e).substring(1, duplicates_value.get(e).length() - 1);
-                                    } 
-                                else 
-                                {
-                                    throw new java.lang.RuntimeException("There is a problem with your CSV output types");
-                                }
-                                
+                                    } else {
+                                        throw new java.lang.RuntimeException("There is a problem with your CSV output types");
+                                    }
+
                                 dato.put(duplicates.get(e), key);
                             }
                             data_check = data_check + dato.toString() + "," + "\n";
@@ -117,41 +110,34 @@ public class transactions_Finder {
                     }
                     System.out.println("INFO: Processing of block " + block_start + " finished");
                     block_start += 1;
-                } catch (JSONException e) {
-                } catch (RuntimeException e) {
+                } catch (JSONException e) {} catch (RuntimeException e) {
                     System.out.println("ERROR: There is a problem with your CSV output types");
-                    reset_Finder.resetting(savings, val1);
+                    // reset_Finder.resetting(savings, val1);
                     System.exit(1);
 
-                } 
-                catch (Exception e) {
+                } catch (Exception e) {
                     continue;
                 }
             }
-            if (lung == Integer.valueOf(val1)+1)
-            {
-            data_check = data_check.substring(0, data_check.length() - 2) + "\n" + "]";
+            if (lung == Integer.valueOf(val1) + 1) {
+                data_check = data_check.substring(0, data_check.length() - 2) + "\n" + "]";
+            } else {
+                data_check = data_check.substring(0, data_check.length() - 2) + "\n" + ",";
             }
-            else
-            {
-            data_check = data_check.substring(0, data_check.length() - 2) + "\n" + ","; 
-            }
-
 
             file.append(data_check);
             file.close();
-            if (lung == Integer.valueOf(val1)+1)
-            {
-            json_To_Csv.createCsv(output_path, val1);
-            if (data_check.length() < 10) {
-                System.out.println("INFO: No transactions found with these filters!");
-                fileToDeletePath = Paths.get(output_path + "/output.json");
-                Files.deleteIfExists(fileToDeletePath);
-            } else {
-                System.out.println("INFO: Json and Csv export ended.");
+            if (lung == Integer.valueOf(val1) + 1) {
+                json_To_Csv.createCsv(output_path, val1);
+                if (data_check.length() < 10) {
+                    System.out.println("INFO: No transactions found with these filters!");
+                    fileToDeletePath = Paths.get(output_path + "/output.json");
+                    Files.deleteIfExists(fileToDeletePath);
+                } else {
+                    System.out.println("INFO: Json and Csv export ended.");
 
+                }
             }
-        }
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();

@@ -6,6 +6,7 @@ import blf.util.RootListenerException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +23,8 @@ public class BlfApp {
     private static final String CMD_VALIDATE = "validate";
     private static final Logger LOGGER = Logger.getLogger(BlfApp.class.getName());
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, InterruptedException, IOException {
+    public static void main(String[] args) throws NoSuchAlgorithmException, InterruptedException, IOException, ClassNotFoundException,
+        NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (args.length < 2) {
             final String message = String.format(
                 "Execution of ELF requires two arguments: [%s|%s|%s] <PATH_TO_SCRIPT>",
@@ -76,7 +78,8 @@ public class BlfApp {
         }
     }
 
-    private static void extract(String filepath) throws NoSuchAlgorithmException, InterruptedException, IOException {
+    private static void extract(String filepath) throws NoSuchAlgorithmException, InterruptedException, IOException, ClassNotFoundException,
+        NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         boolean Algo_true = false;
         boolean both = true;
         try {
@@ -106,7 +109,9 @@ public class BlfApp {
 
     }
 
-    private static void validate(String filepath) throws NoSuchAlgorithmException, InterruptedException, IOException {
+    private static void validate(String filepath) throws NoSuchAlgorithmException, InterruptedException, IOException,
+        ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
+        InvocationTargetException {
         boolean one = false;
         boolean Algo_true = false;
         try {

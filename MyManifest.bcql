@@ -1,0 +1,12 @@
+SET BLOCKCHAIN "Algorand";
+SET OUTPUT FOLDER"./test_output";
+SET CONNECTION {"https://mainnet-algorand.api.purestake.io/idx2", "YOUR API KEY. Cx"};
+
+BLOCKS (16675073) (16675892)
+{
+        LOG ENTRIES ("ZW3ISEHZUHPO7OZGMKLKIIMKVICOUDRCERI454I3DB2BH52HGLSO67W754") (asset-transfer-transaction, asset_id 27165954, address_role sender, txn_type axfer) 
+    {
+        TRANSACTION FILTERS ();
+        EMIT CSV ROW (Activity round-time, CaseID receiver, Timestamp round-time);
+    }
+}
