@@ -8,8 +8,9 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema.Builder;
 
+// Transform json to csv file
 public class json_To_Csv {
-    public static void createCsv(String bcqlFile, String val1) {
+    public static void createCsv(String bcqlFile) {
         try {
             JsonNode jsonTree = new ObjectMapper().readTree(new File(bcqlFile + "/output.json"));
             Builder csvSchemaBuilder = CsvSchema.builder();
@@ -18,9 +19,6 @@ public class json_To_Csv {
             CsvSchema csvSchema = csvSchemaBuilder.build().withHeader();
             CsvMapper csvMapper = new CsvMapper();
             csvMapper.writerFor(JsonNode.class).with(csvSchema).writeValue(new File(bcqlFile + "/output.csv"), jsonTree);
-        } catch (Exception e) {
-
-        }
-
+        } catch (Exception e) {}
     }
 }

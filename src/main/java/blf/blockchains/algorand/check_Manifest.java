@@ -2,7 +2,6 @@ package blf.blockchains.algorand;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,17 +12,13 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
+// Check if the manifest file is good
 public class check_Manifest {
-    // public static void main(String[] args) throws InterruptedException, NoSuchAlgorithmException, IOException, ClassNotFoundException,
-    // IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
-
     public static void startAlgo(String bcqlFile, Boolean type) throws InterruptedException, NoSuchAlgorithmException, IOException,
         ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException,
         InvocationTargetException {
@@ -50,75 +45,41 @@ public class check_Manifest {
 
         while (mani2.hasNextLine()) {
             String data = mani2.nextLine();
+            // Check if blockchain is set to Algorand
             if (data.contains("SET")
                 && data.contains("BLOCKCHAIN")
                 && (data.indexOf("//") > data.indexOf("SET") || data.indexOf("//") == -1)
                 && (data.contains("ALGORAND") || data.contains("algorand") || data.contains("Algorand"))) {
                 blockchain_set = true;
             }
+            // Check the output folder
             if (data.contains("SET")
                 && data.contains("OUTPUT")
                 && data.contains("FOLDER")
                 && (data.indexOf("//") > data.indexOf("SET") || data.indexOf("//") == -1)) {
                 String[] result1 = data.split("\"");
                 if (result1.length < 2) {
+                    mani2.close();
                     throw new java.lang.RuntimeException("Error in Output Folder. You need to write it in the same line!");
                 }
                 output_path = result1[1];
             }
+            // Check the connection to the Indexer API
             if (data.contains("SET") && data.contains("CONNECTION")) {
-                String[] result = data.split("\"");
-                if ((data.indexOf("//") < data.indexOf(result[1]))) {
+                String[] result2 = data.split("\"");
+                if ((data.indexOf("//") < data.indexOf(result2[1]))) {
                     continue;
                 }
-                if (result.length != 5) {
+                if (result2.length != 5) {
+                    mani2.close();
                     throw new java.lang.RuntimeException("You need to write the address and the token in the same line!");
                 }
-                address = result[1];
-                token = result[3];
+                address = result2[1];
+                token = result2[3];
             }
+            // Check the blocks to analyze
             if (data.contains("BLOCKS") && (data.indexOf("//") > data.indexOf("BLOCKS") || data.indexOf("//") == -1)) {
-                int number = 0;
-                while (data.charAt(number) != '(') {
-                    number += 1;
-                }
-                int beginning = number + 1;
-                while (data.charAt(number) != ')') {
-                    number += 1;
-                }
-                if (beginning != number) {
-                    block_start = Integer.parseInt(data.substring(beginning, number).replaceAll("\\s", ""));
-                } else {
-                    block_start = -100;
-                }
-                while (data.charAt(number) != '(') {
-                    number += 1;
-                }
-                int ini = number + 1;
-                while (data.charAt(number) != ')') {
-                    number += 1;
-                }
-                if (ini != number) {
-                    block_end = Integer.parseInt(data.substring(ini, number).replaceAll("\\s", ""));
-                } else {
-                    block_end = -100;
-                }
-            }
-            if (data.contains("LOG")
-                && data.contains("ENTRIES")
-                && (data.indexOf("//") > data.indexOf("LOG") || data.indexOf("//") == -1)) {
-                address_set = "";
-                options_set = "";
                 int number1 = 0;
-                while (data.charAt(number1) != '(') {
-                    number1 += 1;
-                }
-                int iniziamo1 = number1 + 1;
-                while (data.charAt(number1) != ')') {
-                    number1 += 1;
-                }
-                address_set = data.substring(iniziamo1, number1).replaceAll("\\s", "");
-                saving_address.add(address_set);
                 while (data.charAt(number1) != '(') {
                     number1 += 1;
                 }
@@ -126,27 +87,49 @@ public class check_Manifest {
                 while (data.charAt(number1) != ')') {
                     number1 += 1;
                 }
-                options_set = data.substring(beginning1, number1);
+                if (beginning1 != number1) {
+                    block_start = Integer.parseInt(data.substring(beginning1, number1).replaceAll("\\s", ""));
+                } else {
+                    block_start = -100;
+                }
+                while (data.charAt(number1) != '(') {
+                    number1 += 1;
+                }
+                int ini = number1 + 1;
+                while (data.charAt(number1) != ')') {
+                    number1 += 1;
+                }
+                if (ini != number1) {
+                    block_end = Integer.parseInt(data.substring(ini, number1).replaceAll("\\s", ""));
+                } else {
+                    block_end = -100;
+                }
+            }
+            // Check the adress to find and its filters
+            if (data.contains("LOG")
+                && data.contains("ENTRIES")
+                && (data.indexOf("//") > data.indexOf("LOG") || data.indexOf("//") == -1)) {
+                int number2 = 0;
+                while (data.charAt(number2) != '(') {
+                    number2 += 1;
+                }
+                int beginning1 = number2 + 1;
+                while (data.charAt(number2) != ')') {
+                    number2 += 1;
+                }
+                address_set = data.substring(beginning1, number2).replaceAll("\\s", "");
+                saving_address.add(address_set);
+                while (data.charAt(number2) != '(') {
+                    number2 += 1;
+                }
+                int beginning2 = number2 + 1;
+                while (data.charAt(number2) != ')') {
+                    number2 += 1;
+                }
+                options_set = data.substring(beginning2, number2);
                 saving_options.add(options_set);
             }
-            if (data.contains("EMIT")
-                && data.contains("CSV")
-                && data.contains("ROW")
-                && (data.indexOf("//") > data.indexOf("EMIT") || data.indexOf("//") == -1)) {
-                output_type1 = true;
-                csv_options = "";
-                int next_csv = 0;
-                while (data.charAt(next_csv) != '(') {
-                    next_csv += 1;
-                }
-                int start_csv = next_csv;
-                while (data.charAt(next_csv) != ')') {
-                    next_csv += 1;
-                }
-                csv_options = data.substring(start_csv + 1, next_csv);
-                saving_output.add(csv_options);
-            }
-
+            // Check the single transaction filter
             if (data.contains("TRANSACTION")
                 && data.contains("FILTERS")
                 && (data.indexOf("//") > data.indexOf("TRANSACTION") || data.indexOf("//") == -1)) {
@@ -161,13 +144,29 @@ public class check_Manifest {
                 single_transaction = data.substring(start_single + 1, next_single);
                 saving_singles.add(single_transaction);
             }
-
+            // Check the type of output to produce
+            if (data.contains("EMIT")
+                && data.contains("CSV")
+                && data.contains("ROW")
+                && (data.indexOf("//") > data.indexOf("EMIT") || data.indexOf("//") == -1)) {
+                output_type1 = true;
+                int next_csv = 0;
+                while (data.charAt(next_csv) != '(') {
+                    next_csv += 1;
+                }
+                int start_csv = next_csv;
+                while (data.charAt(next_csv) != ')') {
+                    next_csv += 1;
+                }
+                csv_options = data.substring(start_csv + 1, next_csv);
+                saving_output.add(csv_options);
+            }
+            // Check the type of output to produce
             if (data.contains("EMIT")
                 && data.contains("XES")
                 && data.contains("EVENT")
                 && (data.indexOf("//") > data.indexOf("EMIT") || data.indexOf("//") == -1)) {
                 output_type2 = true;
-                csv_options = "";
                 System.out.println(
                     "INFO: XES output is not yet implemented. I am going to produce a CSV file. You can transform it to XES with for example Disco."
                 );
@@ -183,9 +182,11 @@ public class check_Manifest {
                 saving_output.add(csv_options);
             }
         }
+        mani2.close();
         if (!csv_options.contains("CaseID ") || !csv_options.contains("Activity ")) {
             throw new java.lang.RuntimeException("Your CSV file need at least CaseID and Activity!");
         }
+        // Check if everything exists and it's good
         if (blockchain_set == true
             && ((output_type1 && !output_type2) || (!output_type1 && output_type2))
             && output_path != ""
@@ -199,27 +200,24 @@ public class check_Manifest {
             && saving_options.size() == saving_output.size()
             && saving_singles.size() == saving_output.size()) {
             System.out.println("INFO: The validation did not find errors.");
-            // if (true == true) {
+            // Executed only if type of execution is extract
             if (type == true) {
                 int lung = saving_output.size();
                 int times = lung - 2;
-
-                File da1 = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder0.txt");
-                File a1 = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder0.java");
-                Files.copy(da1.toPath(), a1.toPath());
-
-                File da2 = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder1.txt");
-                File a2 = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder1.java");
-                Files.copy(da2.toPath(), a2.toPath());
-
+                File from1 = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder0.txt");
+                File to1 = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder0.java");
+                Files.copy(from1.toPath(), to1.toPath());
+                File from2 = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder1.txt");
+                File to2 = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder1.java");
+                Files.copy(from2.toPath(), to2.toPath());
+                // Number of duplicates to create based on number of filters to analyze
                 if (lung > 2) {
-
                     for (int i = 0; i < times; i++) {
-                        File da = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder1.java");
-                        File a = new File(
+                        File from = new File("./src/main/java/blf/blockchains/algorand/transactions_Finder1.java");
+                        File to = new File(
                             "./src/main/java/blf/blockchains/algorand/transactions_Finder" + Integer.valueOf(i + 2) + ".java"
                         );
-                        Files.copy(da.toPath(), a.toPath());
+                        Files.copy(from.toPath(), to.toPath());
                         File fileToBeModified = new File(
                             "src/main/java/blf/blockchains/algorand/transactions_Finder" + Integer.valueOf(i + 2) + ".java"
                         );
@@ -249,27 +247,10 @@ public class check_Manifest {
                         } catch (IOException e) {}
                     }
                 }
-                /* Path cartelle = Paths.get("./blf/blockchains/algorand");
-                Files.createDirectories(cartelle);
-                TimeUnit.SECONDS.sleep(5);
-                for (int i = 0; i < saving_output.size(); i++) {
-                    Files.move(
-                        Paths.get("./target/classes/blf/blockchains/algorand/transactions_Finder" + String.valueOf(i) + ".class"),
-                        Paths.get("./blf/blockchains/algorand/transactions_Finder" + String.valueOf(i) + ".class"),
-                        StandardCopyOption.REPLACE_EXISTING
-                    );
-                }
-                TimeUnit.SECONDS.sleep(3);
-                File file = new File("./blf/blockchains/algorand/");
-                URL url = file.toURI().toURL();
-                URL[] urls = new URL[] { url };
-                ClassLoader cl = new URLClassLoader(urls);
-                Class cls = cl.loadClass("transactions_Finder0"); */
-
+                // Execute filters one by one
                 for (int v = 0; v < saving_output.size(); v++) {
                     duplicates.clear();
                     duplicates_value.clear();
-
                     String[] result = saving_output.get(v).split(",");
                     for (int i = 0; i < result.length; i++) {
                         int val = result[i].trim().indexOf(' ');
@@ -282,24 +263,22 @@ public class check_Manifest {
                             duplicates_value.add(word1);
                         }
                     }
-
                     if (saving_options.get(v) != "") {
-                        List<String> savings = apply_Filters.implement_filters(
+                        // Apply filters to the file
+                        List<String> savings = apply_Filters.implementFilters(
                             saving_options.get(v),
                             String.valueOf(v),
                             saving_address.get(v),
                             block_start,
                             block_end
                         );
+                        // Execute finder with reflection
                         File f = new File("target/classes");
                         URL[] cp = { f.toURI().toURL() };
                         URLClassLoader urlcl = new URLClassLoader(cp);
                         Class<?> clazz1 = urlcl.loadClass("blf.blockchains.algorand.transactions_Finder" + String.valueOf(v));
-                        // Class<?> clazz = Class.forName("target.classes.blf.blockchains.algorand.transactions_Finder" +
-                        // String.valueOf(v));
                         Method method = clazz1.getMethod(
                             "finding",
-                            String.class,
                             String.class,
                             String.class,
                             String.class,
@@ -314,7 +293,6 @@ public class check_Manifest {
                             null,
                             address,
                             token,
-                            saving_address.get(v),
                             output_path,
                             duplicates,
                             duplicates_value,
@@ -323,23 +301,12 @@ public class check_Manifest {
                             lung,
                             saving_singles
                         );
-                        /*                      transactions_Finder.finding(
-                        address,
-                        token,
-                        block_start,
-                        block_end,
-                        saving_address.get(v),
-                        output_path,
-                        duplicates,
-                        duplicates_value,
-                        savings
-                                            );  */
-                        reset_Finder.resetting(savings, String.valueOf(v), block_start, block_end);
+                        urlcl.close();
                     } else {
                         throw new java.lang.RuntimeException("There is a problem with your manifest file!");
                     }
-
                 }
+                // Delete every finder
                 for (int i = 0; i <= lung; i++) {
                     Path fileToDeletePath = Paths.get(
                         "./src/main/java/blf/blockchains/algorand/transactions_Finder" + Integer.valueOf(i) + ".java"
@@ -350,6 +317,5 @@ public class check_Manifest {
         } else {
             throw new java.lang.RuntimeException("There is a problem with your manifest file!");
         }
-        mani2.close();
     }
 }

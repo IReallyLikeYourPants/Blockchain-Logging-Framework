@@ -2,8 +2,9 @@ package blf.blockchains.algorand;
 
 import org.json.JSONObject;
 
+// Check if transaction finded by transactions_FinderX has what we want
 public class single_Transaction {
-    public static boolean controlla(JSONObject singolo, String saving_singles) {
+    public static boolean checkTran(JSONObject tran, String saving_singles) {
         if (saving_singles.equals("")) {
             return true;
         }
@@ -12,14 +13,11 @@ public class single_Transaction {
             int val = result[i].trim().indexOf(' ');
             String word = result[i].trim().substring(0, val).trim();
             String word1 = result[i].trim().substring(val).trim();
-            String key = singolo.getString(word);
-            // int key = singolo.getInt(word);
-            // if (key != Integer.valueOf(word1))
+            String key = tran.getString(word);
             if (!key.equals(word1)) {
                 return false;
             }
         }
         return true;
     }
-
 }

@@ -3,6 +3,7 @@ package blf.blockchains.algorand;
 import com.algorand.algosdk.v2.client.common.IndexerClient;
 import com.algorand.algosdk.v2.client.common.Client;
 
+// Connection to the Algorand Indexer API
 public class connection_To_Indexer {
     public Client connectToNetwork(String address, String pass) {
         final String IDX_API_ADDR = address;

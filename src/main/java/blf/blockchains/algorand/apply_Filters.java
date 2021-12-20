@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+// Apply filters for the Indexer
 public class apply_Filters {
-    public static List<String> implement_filters(String options_set, String val1, String adressino, int block_start, int block_end)
+    public static List<String> implementFilters(String options_set, String val1, String adressino, int block_start, int block_end)
         throws InterruptedException {
         String[] result = options_set.split(",");
         List<String> saving = new ArrayList<String>();
         saving.add(result[0]);
+        // If no filters applied
         if (result.length == 1) {
             File fileToBeModified = new File("src/main/java/blf/blockchains/algorand/transactions_Finder" + val1 + ".java");
             String oldContent = "";
@@ -52,10 +54,11 @@ public class apply_Filters {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
+        }
+        // If filters applied
+        else {
             for (int i = 1; i < result.length; i++) {
                 if (result[i].trim().indexOf(' ') == -1) {
-                    reset_Finder.resetting(saving, val1, block_start, block_end);
                     throw new java.lang.RuntimeException("There is an error with a transaction filter!");
                 }
                 int val = result[i].trim().indexOf(' ');
@@ -107,7 +110,7 @@ public class apply_Filters {
                         );
                         saving.add(".currencyGreaterThan(Long.valueOf(" + word1.trim() + "))");
                     } else {
-                        reset_Finder.resetting(saving, val1, block_start, block_end);
+                        reader.close();
                         throw new java.lang.RuntimeException("There is an error with a transaction filter!");
                     }
                     writer = new FileWriter(fileToBeModified);
@@ -121,10 +124,8 @@ public class apply_Filters {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         }
-
         TimeUnit.SECONDS.sleep(2);
         return saving;
     }
