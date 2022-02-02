@@ -1,0 +1,31 @@
+SET BLOCKCHAIN "Ethereum Classic";
+SET OUTPUT FOLDER "./test_output";
+SET CONNECTION "wss://569baae4d6ef4178a548f1835d3c9294.etc.ws.rivet.cloud/";
+
+BLOCKS (14304089) (14310089) {
+    
+    LOG ENTRIES (0x59E34EF31049565D041Aec6137F40f518c2D47c1) (Mint(uint indexed tokenId, address indexed mintedBy, address indexed mintedTo)) {
+        EMIT XES EVENT ()(tokenId)()("mint" as xs:string concept:name);
+    }
+
+    LOG ENTRIES (0x59E34EF31049565D041Aec6137F40f518c2D47c1) (TokenOnSale(uint256 indexed _tokenId, address indexed _owner, uint256 _price)) {
+        EMIT XES EVENT ()(_tokenId)()("onSale" as xs:string concept:name);
+    }
+
+    LOG ENTRIES (0x59E34EF31049565D041Aec6137F40f518c2D47c1) (TokenNotOnSale(uint256 indexed _tokenId, address indexed _owner)) {
+        EMIT XES EVENT ()(_tokenId)()("notOnSale" as xs:string concept:name);
+    }
+
+    LOG ENTRIES (0x59E34EF31049565D041Aec6137F40f518c2D47c1) (MarketTrade(uint256 indexed _tokenId, address indexed _from, address indexed _to, address buyer, uint256 _price)) {
+        EMIT XES EVENT ()(_tokenId)()("trade" as xs:string concept:name);
+    }
+
+    LOG ENTRIES (0x59E34EF31049565D041Aec6137F40f518c2D47c1) (TokenMarketPriceChange(uint256 indexed _tokenId, address indexed _owner, uint256 _oldPrice, uint256 _newPrice)) {
+        EMIT XES EVENT ()(_tokenId)()("priceChange" as xs:string concept:name);
+    }
+
+    LOG ENTRIES (0x59E34EF31049565D041Aec6137F40f518c2D47c1) (Transfer(address indexed from, address indexed to, uint256 indexed tokenId)) {
+        EMIT XES EVENT ()(tokenId)()("transfer" as xs:string concept:name);
+    }
+
+}

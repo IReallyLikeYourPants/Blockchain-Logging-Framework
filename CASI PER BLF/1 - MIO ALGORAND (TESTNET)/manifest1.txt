@@ -1,0 +1,42 @@
+SET BLOCKCHAIN "Algorand";
+SET OUTPUT FOLDER "./test_output";
+SET CONNECTION {"https://testnet-algorand.api.purestake.io/idx2", "qPBSYEwBfX7BYAjkNDSel8BCMF5HZJJo9NO2F2R2"};
+
+BLOCKS () ()
+{
+    LOG ENTRIES ("RBRBZ2QOWDFM7WTGXGBME72KANAJZ6OCUR4X6LTLQ53PKTVFXAXSU744OE") (payment-transaction) 
+    {
+        TRANSACTION FILTERS ();
+        EMIT CSV ROW (Activity "mine_total", CaseID "me", Timestamp round-time, Quantity amount);
+    }
+    
+    LOG ENTRIES ("RBRBZ2QOWDFM7WTGXGBME72KANAJZ6OCUR4X6LTLQ53PKTVFXAXSU744OE") (payment-transaction) 
+    {
+        TRANSACTION FILTERS (receiver JX3XXWRGLONZ6PLNQXHQ6DBCUELFXFWY35VGD5IVHALKJYWLJU2TFAII3A);
+        EMIT CSV ROW (Activity "mine_jx3", CaseID "me", Timestamp round-time, Quantity amount);
+    }
+
+    LOG ENTRIES ("RBRBZ2QOWDFM7WTGXGBME72KANAJZ6OCUR4X6LTLQ53PKTVFXAXSU744OE") (payment-transaction) 
+    {
+        TRANSACTION FILTERS (receiver EX3L3OW2EOCHDJCUX3XDGDIQQZFVNOSSRVCG4ZK73VLZNZ2EO4ZBT2HE6U);
+        EMIT CSV ROW (Activity "mine_ex3", CaseID "me", Timestamp round-time, Quantity amount);
+    }
+
+    LOG ENTRIES ("RYRYZOAQNG6SAD3XQMRIRH3VR7TRWIMYR5BZLA4OEKUEQXI7ZO62I74BQM") (payment-transaction, txn_type PAY) 
+    {
+        TRANSACTION FILTERS ();
+        EMIT CSV ROW (Activity "random1_total", CaseID "random1", Timestamp round-time, Quantity amount);
+    }
+
+    LOG ENTRIES ("QIFS3OCHBM5UPOPNWJS4BE6PSNJ6O5RYDMXB7I4HX6Y226CLPQ2KBT3SHY") (payment-transaction, txn_type PAY) 
+    {
+        TRANSACTION FILTERS ();
+        EMIT CSV ROW (Activity "random2_total", CaseID "random2", Timestamp round-time, Quantity amount);
+    }
+
+    LOG ENTRIES ("44SDV4IGZWGQFSEQW2NONO3YVQZGT4KLSX53XZS7JHDQSFGONDH6IOPS2U") (payment-transaction, txn_type PAY) 
+    {
+        TRANSACTION FILTERS ();
+        EMIT CSV ROW (Activity "random3_total", CaseID "random3", Timestamp round-time, Quantity amount);
+    }
+}

@@ -1,0 +1,12 @@
+SET BLOCKCHAIN "Algorand";
+SET OUTPUT FOLDER "./test_output";
+SET CONNECTION {"https://mainnet-algorand.api.purestake.io/idx2", "qPBSYEwBfX7BYAjkNDSel8BCMF5HZJJo9NO2F2R2"};
+
+BLOCKS (18720439) (18739639)
+{
+    LOG ENTRIES ("310014962") (asset-transfer-transaction) 
+    {
+        TRANSACTION FILTERS ();
+        EMIT CSV ROW (Activity receiver, CaseID sender, Timestamp round-time, Quantity amount);
+    }
+}

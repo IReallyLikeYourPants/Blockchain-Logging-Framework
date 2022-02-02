@@ -79,6 +79,7 @@ public class transactions_Finder0
                         {
                             for (int i = 0; i < jsonObjAll.getJSONArray("transactions").length(); i++)
                             {
+                                try {
                                 if (single_Transaction.checkTran(
                                     jsonObjAll.getJSONArray("transactions").getJSONObject(i).getJSONObject(savings.get(0)),
                                     saving_singles.get(Integer.valueOf(val1))
@@ -131,6 +132,12 @@ public class transactions_Finder0
                                     dato.put(duplicates.get(e), key);
                                 }
                                 data_check = data_check + dato.toString() + "," + "\n";
+                            }
+                            catch (Exception e)
+                            {
+                                System.out.println(e);
+                                continue;
+                            }
                             }
                         }
                     }

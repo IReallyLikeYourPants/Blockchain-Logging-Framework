@@ -1,6 +1,6 @@
 SET BLOCKCHAIN "Algorand";
 SET OUTPUT FOLDER "./test_output";
-SET CONNECTION {"https://mainnet-algorand.api.purestake.io/idx2", "YOUR API KEY. Cx"};
+SET CONNECTION {"https://mainnet-algorand.api.purestake.io/idx2", "qPBSYEwBfX7BYAjkNDSel8BCMF5HZJJo9NO2F2R2"};
 
 BLOCKS (18735217) (18739217)
 {
@@ -34,6 +34,3 @@ BLOCKS (18735217) (18739217)
         EMIT CSV ROW (Activity "proxy", CaseID sender, Timestamp round-time);
     }
 }
-
-
-
