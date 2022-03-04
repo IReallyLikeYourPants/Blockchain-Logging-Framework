@@ -46,7 +46,3 @@ BLOCKS (18735217) (18739217)
         EMIT CSV ROW (Activity "user_to_escrow_yldy", CaseID sender, Timestamp round-time, Quantity amount);
     }
 }
-
-
-
-
