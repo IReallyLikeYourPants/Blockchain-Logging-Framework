@@ -81,6 +81,10 @@ Now you're ready to develop!
 
 ## Test
 
+To execute a bcql file, run
+```
+java -jar .\target\blf-cmd.jar extract .\myManifest12.bcql
+``` 
 To run unit tests, run
 ```bash
 mvn test
