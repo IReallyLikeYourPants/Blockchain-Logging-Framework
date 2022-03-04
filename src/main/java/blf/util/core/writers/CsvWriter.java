@@ -1,4 +1,4 @@
-package blf.core.writers;
+package blf.util.core.writers;
 
 import blf.core.exceptions.ExceptionHandler;
 import io.reactivex.annotations.NonNull;

@@ -1,4 +1,4 @@
-package blf.core.instructions;
+package blf.util.core.instructions;
 
 import blf.core.state.ProgramState;
 import blf.core.values.ValueAccessor;

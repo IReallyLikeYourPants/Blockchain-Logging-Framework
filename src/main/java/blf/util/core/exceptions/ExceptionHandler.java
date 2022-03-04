@@ -1,4 +1,4 @@
-package blf.core.exceptions;
+package blf.util.core.exceptions;
 
 import blf.core.state.ProgramState;
 

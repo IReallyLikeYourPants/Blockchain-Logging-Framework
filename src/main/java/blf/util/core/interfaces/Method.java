@@ -1,4 +1,5 @@
-package blf.core.interfaces;
+
+package blf.util.core.interfaces;
 
 import blf.core.state.ProgramState;
 

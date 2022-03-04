@@ -1,4 +1,4 @@
-package blf.core.state;
+package blf.util.core.state;
 
 import blf.configuration.EmissionSettings;
 import blf.core.values.BlockchainVariables;

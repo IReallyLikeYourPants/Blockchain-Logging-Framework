@@ -1,4 +1,4 @@
-package blf.core.writers;
+package blf.util.core.writers;
 
 import blf.configuration.EmissionSettings;
 import io.reactivex.annotations.NonNull;

@@ -1,4 +1,4 @@
-package blf.core.readers;
+package blf.util.core.readers;
 
 public abstract class DataReader<T1, T2, T3, T4> {
     protected T1 client;

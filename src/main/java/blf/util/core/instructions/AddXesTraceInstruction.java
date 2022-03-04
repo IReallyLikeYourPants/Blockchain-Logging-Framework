@@ -1,4 +1,4 @@
-package blf.core.instructions;
+package blf.util.core.instructions;
 
 import blf.core.parameters.XesParameter;
 import blf.core.state.ProgramState;

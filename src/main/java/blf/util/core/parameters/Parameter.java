@@ -1,4 +1,4 @@
-package blf.core.parameters;
+package blf.util.core.parameters;
 
 import blf.core.exceptions.ExceptionHandler;
 import org.web3j.abi.TypeReference;

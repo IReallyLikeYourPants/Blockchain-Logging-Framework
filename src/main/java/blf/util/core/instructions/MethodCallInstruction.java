@@ -1,4 +1,4 @@
-package blf.core.instructions;
+package blf.util.core.instructions;
 
 import blf.core.interfaces.Method;
 import blf.core.state.ProgramState;

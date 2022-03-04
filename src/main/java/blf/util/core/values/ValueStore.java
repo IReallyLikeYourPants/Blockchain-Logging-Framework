@@ -1,4 +1,4 @@
-package blf.core.values;
+package blf.util.core.values;
 
 import java.util.HashMap;
 import java.util.List;
