@@ -4,33 +4,49 @@ SET CONNECTION {"https://mainnet-algorand.api.purestake.io/idx2", "qPBSYEwBfX7BY
 
 BLOCKS (18735217) (18739217)
 {
+    LOG ENTRIES ("233725848") (application-transaction) 
+    {
+        TRANSACTION FILTERS ();
+        EMIT CSV ROW (Activity "proxy", CaseID sender, Timestamp round-time, Quantity "0");
+    }
+
     LOG ENTRIES ("233725844") (application-transaction) 
     {
         TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "lottery", CaseID sender, Timestamp round-time);
+        EMIT CSV ROW (Activity "lottery", CaseID sender, Timestamp round-time, Quantity "0");
     }
 
     LOG ENTRIES ("233725850") (application-transaction) 
     {
         TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "staking", CaseID sender, Timestamp round-time);
+        EMIT CSV ROW (Activity "staking", CaseID sender, Timestamp round-time, Quantity "0");
     }
-
-    LOG ENTRIES ("FMBXOFAQCSAD4UWU4Q7IX5AV4FRV6AKURJQYGXLW3CTPTQ7XBX6MALMSPY") (asset-transfer-transaction) 
+    
+    LOG ENTRIES ("FMBXOFAQCSAD4UWU4Q7IX5AV4FRV6AKURJQYGXLW3CTPTQ7XBX6MALMSPY") (asset-transfer-transaction, address_role sender) 
     {
         TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "escrow_yldy", CaseID sender, Timestamp round-time);
+        EMIT CSV ROW (Activity "escrow_to_user_yldy", CaseID receiver, Timestamp round-time, Quantity amount);
     }
 
-    LOG ENTRIES ("FMBXOFAQCSAD4UWU4Q7IX5AV4FRV6AKURJQYGXLW3CTPTQ7XBX6MALMSPY") (payment-transaction) 
+    LOG ENTRIES ("FMBXOFAQCSAD4UWU4Q7IX5AV4FRV6AKURJQYGXLW3CTPTQ7XBX6MALMSPY") (payment-transaction, address_role sender) 
     {
         TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "escrow_algo", CaseID sender, Timestamp round-time);
+        EMIT CSV ROW (Activity "escrow_to_user_algo", CaseID receiver, Timestamp round-time, Quantity amount);
     }
 
-    LOG ENTRIES ("233725848") (application-transaction) 
+    LOG ENTRIES ("FMBXOFAQCSAD4UWU4Q7IX5AV4FRV6AKURJQYGXLW3CTPTQ7XBX6MALMSPY") (payment-transaction, address_role receiver) 
     {
         TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "proxy", CaseID sender, Timestamp round-time);
+        EMIT CSV ROW (Activity "user_to_escrow_algo", CaseID sender, Timestamp round-time, Quantity amount);
+    }
+
+    LOG ENTRIES ("FMBXOFAQCSAD4UWU4Q7IX5AV4FRV6AKURJQYGXLW3CTPTQ7XBX6MALMSPY") (asset-transfer-transaction, address_role receiver) 
+    {
+        TRANSACTION FILTERS ();
+        EMIT CSV ROW (Activity "user_to_escrow_yldy", CaseID sender, Timestamp round-time, Quantity amount);
     }
 }
+
+
+
+
