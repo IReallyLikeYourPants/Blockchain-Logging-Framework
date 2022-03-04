@@ -91,10 +91,10 @@ public class transactions_Finder1
                                     String key = "";
                                     if (duplicates_value.get(e).equals("amount"))
                                     {
-                                        int key1 = jsonObjAll.getJSONArray("transactions")
+                                        Long key1 = jsonObjAll.getJSONArray("transactions")
                                             .getJSONObject(i)
                                             .getJSONObject(savings.get(0))
-                                            .getInt("amount");
+                                            .getLong("amount");
                                         key = String.valueOf(key1);
                                     }
                                     else if (duplicates_value.get(e).equals("receiver"))
@@ -133,7 +133,6 @@ public class transactions_Finder1
                             }
                             catch (Exception e)
                             {
-                                System.out.println(e);
                                 continue;
                             }
                             }

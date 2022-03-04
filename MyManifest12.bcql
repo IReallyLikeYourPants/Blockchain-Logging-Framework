@@ -1,39 +1,42 @@
 SET BLOCKCHAIN "Algorand";
 SET OUTPUT FOLDER "./test_output";
-SET CONNECTION {"https://mainnet-algorand.api.purestake.io/idx2", "YOUR API KEY. Cx"};
+SET CONNECTION {"https://testnet-algorand.api.purestake.io/idx2", "YOUR API KEY. Cx"};
 
-BLOCKS (18735217) (18739217)
+BLOCKS () ()
 {
-    LOG ENTRIES ("233725844") (application-transaction) 
+    LOG ENTRIES ("RBRBZ2QOWDFM7WTGXGBME72KANAJZ6OCUR4X6LTLQ53PKTVFXAXSU744OE") (payment-transaction) 
     {
         TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "lottery", CaseID sender, Timestamp round-time);
+        EMIT CSV ROW (Activity "mine_total", CaseID "me", Timestamp round-time, Quantity amount);
+    }
+    
+    LOG ENTRIES ("RBRBZ2QOWDFM7WTGXGBME72KANAJZ6OCUR4X6LTLQ53PKTVFXAXSU744OE") (payment-transaction) 
+    {
+        TRANSACTION FILTERS (receiver JX3XXWRGLONZ6PLNQXHQ6DBCUELFXFWY35VGD5IVHALKJYWLJU2TFAII3A);
+        EMIT CSV ROW (Activity "mine_jx3", CaseID "me", Timestamp round-time, Quantity amount);
     }
 
-    LOG ENTRIES ("233725850") (application-transaction) 
+    LOG ENTRIES ("RBRBZ2QOWDFM7WTGXGBME72KANAJZ6OCUR4X6LTLQ53PKTVFXAXSU744OE") (payment-transaction) 
     {
-        TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "staking", CaseID sender, Timestamp round-time);
+        TRANSACTION FILTERS (receiver EX3L3OW2EOCHDJCUX3XDGDIQQZFVNOSSRVCG4ZK73VLZNZ2EO4ZBT2HE6U);
+        EMIT CSV ROW (Activity "mine_ex3", CaseID "me", Timestamp round-time, Quantity amount);
     }
 
-    LOG ENTRIES ("FMBXOFAQCSAD4UWU4Q7IX5AV4FRV6AKURJQYGXLW3CTPTQ7XBX6MALMSPY") (asset-transfer-transaction) 
+    LOG ENTRIES ("RYRYZOAQNG6SAD3XQMRIRH3VR7TRWIMYR5BZLA4OEKUEQXI7ZO62I74BQM") (payment-transaction, txn_type PAY) 
     {
         TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "escrow_yldy", CaseID sender, Timestamp round-time);
+        EMIT CSV ROW (Activity "random1_total", CaseID "random1", Timestamp round-time, Quantity amount);
     }
 
-    LOG ENTRIES ("FMBXOFAQCSAD4UWU4Q7IX5AV4FRV6AKURJQYGXLW3CTPTQ7XBX6MALMSPY") (payment-transaction) 
+    LOG ENTRIES ("QIFS3OCHBM5UPOPNWJS4BE6PSNJ6O5RYDMXB7I4HX6Y226CLPQ2KBT3SHY") (payment-transaction, txn_type PAY) 
     {
         TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "escrow_algo", CaseID sender, Timestamp round-time);
+        EMIT CSV ROW (Activity "random2_total", CaseID "random2", Timestamp round-time, Quantity amount);
     }
 
-    LOG ENTRIES ("233725848") (application-transaction) 
+    LOG ENTRIES ("44SDV4IGZWGQFSEQW2NONO3YVQZGT4KLSX53XZS7JHDQSFGONDH6IOPS2U") (payment-transaction, txn_type PAY) 
     {
         TRANSACTION FILTERS ();
-        EMIT CSV ROW (Activity "proxy", CaseID sender, Timestamp round-time);
+        EMIT CSV ROW (Activity "random3_total", CaseID "random3", Timestamp round-time, Quantity amount);
     }
 }
-
-
-
