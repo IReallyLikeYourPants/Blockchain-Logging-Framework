@@ -81,6 +81,8 @@ Now you're ready to develop!
 
 ## Test
 
+To execute extractions from Algorand you need to enter the API token.
+
 To validate a bcql file, run
 ```
 java -jar .\target\blf-cmd.jar validate .\myManifest12.bcql
