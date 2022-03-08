@@ -95,7 +95,7 @@ java -jar .\target\blf-cmd.jar extract .\myManifest12.bcql
 
 If an error occurs delete the files transactions_Finder.java from 
 ```
-C:\Users\mkrys\Desktop\Blockchain-Logging-Framework-master\src\main\java\blf\blockchains\algorand
+Blockchain-Logging-Framework-master\src\main\java\blf\blockchains\algorand
 ```
 
 To run unit tests, run
